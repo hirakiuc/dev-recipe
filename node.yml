@@ -1,0 +1,8 @@
+rbenv:
+  global:
+    2.2.0
+  versions:
+    - 2.2.0
+rbenv-default-gems:
+  default-gems:
+    - bundler
