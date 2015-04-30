@@ -1,3 +1,5 @@
+# TODO: disable selinux
+
 ### rbenv
 include_recipe 'rbenv::system'
 
@@ -27,13 +29,16 @@ end
 ### chrony (yet another ntpd)
 package 'chrony'
 
-service 'chronyd' do
-  action [:enable, :start]
-end
-
 template '/etc/chrony.conf' do
   source 'templates/chrony.conf.erb'
   notifies :restart, 'service[chronyd]'
+  owner 'chrony'
+  group 'chrony'
+  mode '644'
+end
+
+service 'chronyd' do
+  action [:enable, :start]
 end
 
 ### nginx
@@ -90,11 +95,17 @@ template '/etc/yum.repos.d/elasticsearch.repo' do
   source 'templates/elasticsearch.repo.erb'
 end
 
+template '/etc/yum.repos.d/logstash.repo' do
+  source 'templates/logstash.repo.erb'
+end
+
 package 'elasticsearch'
 
 service 'elasticsearch' do
   action [:enable, :start]
 end
+
+package 'logstash'
 
 # TODO: elasticsearch config
 
