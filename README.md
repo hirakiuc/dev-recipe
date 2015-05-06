@@ -14,6 +14,7 @@ itamae recipe to build my development server.
 - mysqld
 - redis-server
 - elasticsearch
+- kibana4 (/opt/kibana4)
 - fluentd
 
 # Usage
