@@ -6,3 +6,6 @@ rbenv:
 rbenv-default-gems:
   default-gems:
     - bundler
+kibana:
+  owner: vagrant
+  group: vagrant

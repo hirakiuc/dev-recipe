@@ -1,3 +1,4 @@
+require 'shellwords'
 # TODO: disable selinux
 
 ### rbenv
@@ -108,6 +109,29 @@ end
 package 'logstash'
 
 # TODO: elasticsearch config
+
+### kibana4
+# FIXME: kibana4 user
+directory '/opt/kibana4' do
+  action :create
+  owner node.kibana.owner
+  group node.kibana.group
+end
+
+execute 'download kibana4...' do
+  command 'curl https://download.elastic.co/kibana/kibana/kibana-4.0.2-linux-x64.tar.gz > /tmp/kibana-4.0.2-linux-x64.tar.gz'
+  not_if 'ls -1 /opt/kibana4 | grep bin'
+end
+
+execute 'extract kibana4' do
+  command 'tar xf /tmp/kibana-4.0.2-linux-x64.tar.gz -C /opt/kibana4 --strip=1'
+  not_if 'ls -1 /opt/kibana4 | grep bin'
+end
+
+execute 'chown kibana4' do
+  command "chown -R #{node.kibana.owner}:#{node.kibana.group} /opt/kibana4"
+  not_if "ls -l /opt/kibana4 | grep #{node.kibana.owner}"
+end
 
 ### td-agent
 execute 'install td-agent' do
